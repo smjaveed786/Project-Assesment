@@ -24,15 +24,22 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log("MongoDB Connection Error:", err));
 
-// Serve Frontend in Production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+const fs = require("fs");
+const distPath = path.join(__dirname, "../frontend/dist");
+
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../frontend", "dist", "index.html"));
+    // Only serve index.html for non-API routes
+    if (!req.path.startsWith("/api")) {
+      res.sendFile(path.resolve(distPath, "index.html"));
+    } else {
+      res.status(404).json({ msg: "API endpoint not found" });
+    }
   });
 } else {
   app.get("/", (req, res) => {
-    res.send("API is running...");
+    res.send("API is running (Frontend not built yet)...");
   });
 }
 
