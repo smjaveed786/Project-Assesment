@@ -49,9 +49,7 @@ const loginUser = async (req, res) => {
 
         // Mock bypass for development/testing if DB is down
         const demoAccounts = {
-            'test@example.com': { _id: '6634d0000000000000000001', password: 'password123', role: 'admin', name: 'Test User' },
-            'admin@demo.com': { _id: '6634d0000000000000000002', password: 'admin123', role: 'admin', name: 'Admin User' },
-            'jane@demo.com': { _id: '6634d0000000000000000003', password: 'jane123', role: 'member', name: 'Jane Doe' }
+            'smjaveedahamed786@gail.com': { _id: '6634d0000000000000000001', password: 'Javeed@66', role: 'admin', name: 'Javeed Admin' }
         };
 
         if (demoAccounts[email] && demoAccounts[email].password === password) {
@@ -92,9 +90,7 @@ const getUsers = async (req, res) => {
     } catch (err) {
         // Fallback for demo mode
         res.json([
-            { _id: '6634d0000000000000000001', name: 'Test User', email: 'test@example.com', role: 'admin' },
-            { _id: '6634d0000000000000000002', name: 'Admin User', email: 'admin@demo.com', role: 'admin' },
-            { _id: '6634d0000000000000000003', name: 'Jane Doe', email: 'jane@demo.com', role: 'member' }
+            { _id: '6634d0000000000000000001', name: 'Javeed Admin', email: 'smjaveedahamed786@gail.com', role: 'admin' }
         ]);
     }
 };

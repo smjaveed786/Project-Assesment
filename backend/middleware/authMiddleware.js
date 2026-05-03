@@ -15,9 +15,7 @@ const protect = async (req, res, next) => {
 
             // Mock bypass for demo accounts
             const demoUsers = {
-                '6634d0000000000000000001': { _id: '6634d0000000000000000001', name: 'Test User', email: 'test@example.com', role: 'admin' },
-                '6634d0000000000000000002': { _id: '6634d0000000000000000002', name: 'Admin User', email: 'admin@demo.com', role: 'admin' },
-                '6634d0000000000000000003': { _id: '6634d0000000000000000003', name: 'Jane Doe', email: 'jane@demo.com', role: 'member' }
+                '6634d0000000000000000001': { _id: '6634d0000000000000000001', name: 'Javeed Admin', email: 'smjaveedahamed786@gail.com', role: 'admin' }
             };
 
             if (demoUsers[decoded.id]) {
