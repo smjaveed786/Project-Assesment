@@ -48,13 +48,20 @@ const loginUser = async (req, res) => {
         const { email, password } = req.body;
 
         // Mock bypass for development/testing if DB is down
-        if (email === 'test@example.com' && password === 'password123') {
+        const demoAccounts = {
+            'test@example.com': { _id: '6634d0000000000000000001', password: 'password123', role: 'admin', name: 'Test User' },
+            'admin@demo.com': { _id: '6634d0000000000000000002', password: 'admin123', role: 'admin', name: 'Admin User' },
+            'jane@demo.com': { _id: '6634d0000000000000000003', password: 'jane123', role: 'member', name: 'Jane Doe' }
+        };
+
+        if (demoAccounts[email] && demoAccounts[email].password === password) {
+            const account = demoAccounts[email];
             return res.json({
-                _id: 'mock_id_123',
-                name: 'Test User',
-                email: 'test@example.com',
-                role: 'admin',
-                token: generateToken('mock_id_123'),
+                _id: account._id,
+                name: account.name,
+                email: email,
+                role: account.role,
+                token: generateToken(account._id),
             });
         }
 
@@ -77,4 +84,30 @@ const loginUser = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser };
+
+const getUsers = async (req, res) => {
+    try {
+        const users = await User.find({}, "-password");
+        res.json(users);
+    } catch (err) {
+        // Fallback for demo mode
+        res.json([
+            { _id: '6634d0000000000000000001', name: 'Test User', email: 'test@example.com', role: 'admin' },
+            { _id: '6634d0000000000000000002', name: 'Admin User', email: 'admin@demo.com', role: 'admin' },
+            { _id: '6634d0000000000000000003', name: 'Jane Doe', email: 'jane@demo.com', role: 'member' }
+        ]);
+    }
+};
+
+const updateUserRole = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { role } = req.body;
+        const user = await User.findByIdAndUpdate(id, { role }, { new: true });
+        res.json(user);
+    } catch (err) {
+        res.status(500).json(err.message);
+    }
+};
+
+module.exports = { registerUser, loginUser, getUsers, updateUserRole };
