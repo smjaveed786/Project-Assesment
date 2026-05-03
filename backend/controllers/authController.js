@@ -49,7 +49,9 @@ const loginUser = async (req, res) => {
 
         // Mock bypass for development/testing if DB is down
         const demoAccounts = {
-            'smjaveedahamed786@gmail.com': { _id: '6634d0000000000000000001', password: 'Javeed@66', role: 'admin', name: 'Javeed Admin' }
+            'test@example.com': { _id: '6634d0000000000000000001', password: 'password123', role: 'admin', name: 'Test User' },
+            'admin@demo.com': { _id: '6634d0000000000000000002', password: 'admin123', role: 'admin', name: 'Admin User' },
+            'jane@demo.com': { _id: '6634d0000000000000000003', password: 'jane123', role: 'member', name: 'Jane Doe' }
         };
 
         if (demoAccounts[email] && demoAccounts[email].password === password) {
@@ -82,28 +84,4 @@ const loginUser = async (req, res) => {
     }
 };
 
-
-const getUsers = async (req, res) => {
-    try {
-        const users = await User.find({}, "-password");
-        res.json(users);
-    } catch (err) {
-        // Fallback for demo mode
-        res.json([
-            { _id: '6634d0000000000000000001', name: 'Javeed Admin', email: 'smjaveedahamed786@gmail.com', role: 'admin' }
-        ]);
-    }
-};
-
-const updateUserRole = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { role } = req.body;
-        const user = await User.findByIdAndUpdate(id, { role }, { new: true });
-        res.json(user);
-    } catch (err) {
-        res.status(500).json(err.message);
-    }
-};
-
-module.exports = { registerUser, loginUser, getUsers, updateUserRole };
+module.exports = { registerUser, loginUser };

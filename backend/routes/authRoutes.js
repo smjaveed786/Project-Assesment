@@ -1,6 +1,5 @@
 const express = require('express');
-const { registerUser, loginUser, getUsers, updateUserRole } = require('../controllers/authController');
-const { protect, admin } = require('../middleware/authMiddleware');
+const { registerUser, loginUser } = require('../controllers/authController');
 const router = express.Router();
 
 const { check } = require('express-validator');
@@ -18,8 +17,5 @@ router.post('/login', [
     check('password', 'Password is required').exists(),
     validate
 ], loginUser);
-
-router.get('/users', protect, getUsers);
-router.put('/role/:id', protect, admin, updateUserRole);
 
 module.exports = router;
